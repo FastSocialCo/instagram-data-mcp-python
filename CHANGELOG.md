@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.5
+- New tool `instagram_top_accounts`: the daily ranking of the 2,000 most-followed Instagram accounts (free, 0 credits).
+- Bundled openapi.json synced with the live API (28 endpoints). A spec `x-mcp-name` now sets the tool name when present.
+
 ## 0.1.4
 - Source moved here from FastSocialCo/instagram-data-mcp, which now holds only the plugin manifests for the remote server. The package itself is unchanged.
 

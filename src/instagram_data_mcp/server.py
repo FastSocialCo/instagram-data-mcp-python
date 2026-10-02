@@ -56,7 +56,7 @@ def build_tools(spec):
             props[p["name"]] = schema
             if p.get("required"):
                 required.append(p["name"])
-        name = _tool_name(op.get("operationId") or path.strip("/").split("/")[-1])
+        name = op.get("x-mcp-name") or _tool_name(op.get("operationId") or path.strip("/").split("/")[-1])
         desc = _clean(op.get("summary", "")) + ". " + _clean(op.get("description", ""))
         tools[name] = (path, types.Tool(
             name=name,

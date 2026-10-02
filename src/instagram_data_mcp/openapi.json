@@ -41,6 +41,10 @@
    "description": "Search, hashtags, locations and audio."
   },
   {
+   "name": "Top charts",
+   "description": "The biggest Instagram accounts, ranked daily. Free."
+  },
+  {
    "name": "Account",
    "description": "Your key and usage."
   }
@@ -1226,7 +1230,7 @@
     "tags": [
      "Engagement"
     ],
-    "description": "A sample of accounts that liked a post, plus the total like count.\n\nCost: **3 credits**.",
+    "description": "A sample of accounts that liked a public post, plus the total like count. One page per call with no cursor, so it is not the full list of likers.\n\nCost: **3 credits**.",
     "parameters": [
      {
       "name": "url",
@@ -1434,7 +1438,7 @@
     "tags": [
      "Network"
     ],
-    "description": "Public follower list of a public account, with the total follower count. Page with cursor where available.\n\nCost: **3 credits**.",
+    "description": "One page of the accounts that follow a public account, with the total follower count. Pass next_cursor back as cursor for the next page; null means no more pages are available. Private accounts return 422 private_account.\n\nCost: **3 credits**.",
     "parameters": [
      {
       "name": "username",
@@ -1547,7 +1551,7 @@
     "tags": [
      "Network"
     ],
-    "description": "Who a public account follows, with the total. Page with cursor.\n\nCost: **3 credits**.",
+    "description": "One page of the accounts a public account follows, with the total. Pass next_cursor back as cursor for the next page; null means no more pages are available. Private accounts return 422 private_account.\n\nCost: **3 credits**.",
     "parameters": [
      {
       "name": "username",
@@ -2765,6 +2769,172 @@
     }
    }
   },
+  "/v1/top": {
+   "get": {
+    "operationId": "top",
+    "summary": "Most-followed Instagram accounts, gainers and losers",
+    "tags": [
+     "Top charts"
+    ],
+    "description": "The same data as fastsocial.co/most-followed-instagram-accounts (Instagram Top Charts): the biggest notable public Instagram accounts ranked by followers, updated daily, with 1, 7 and 30-day follower changes, country, category and projected milestones. Free (0 credits); needs any API key. Data CC BY 4.0: credit FastSocial and link the source.\n\nCost: **0 credits**.",
+    "parameters": [
+     {
+      "name": "sort",
+      "in": "query",
+      "schema": {
+       "type": "string",
+       "enum": [
+        "followers",
+        "gainers",
+        "losers",
+        "milestones"
+       ],
+       "default": "followers"
+      },
+      "example": "gainers",
+      "description": "followers = biggest accounts; gainers / losers = biggest follower change over window; milestones = soonest projected round-number milestone."
+     },
+     {
+      "name": "window",
+      "in": "query",
+      "schema": {
+       "type": "integer",
+       "enum": [
+        1,
+        7,
+        30
+       ]
+      },
+      "description": "Change period in days for gainers / losers. Defaults to the longest period with enough history."
+     },
+     {
+      "name": "country",
+      "in": "query",
+      "schema": {
+       "type": "string",
+       "pattern": "^[A-Za-z]{2}$"
+      },
+      "example": "BR",
+      "description": "Two-letter country code (ISO 3166-1), e.g. US, BR, IN."
+     },
+     {
+      "name": "category",
+      "in": "query",
+      "schema": {
+       "type": "string",
+       "enum": [
+        "sports",
+        "music",
+        "film_tv",
+        "creators",
+        "fashion_beauty",
+        "brands",
+        "media",
+        "public_figures",
+        "other"
+       ]
+      },
+      "description": "Account category."
+     },
+     {
+      "name": "limit",
+      "in": "query",
+      "schema": {
+       "type": "integer",
+       "minimum": 1,
+       "maximum": 100,
+       "default": 50
+      },
+      "description": "Accounts per page (max 100)."
+     },
+     {
+      "name": "offset",
+      "in": "query",
+      "schema": {
+       "type": "integer",
+       "minimum": 0,
+       "default": 0
+      },
+      "description": "Skip this many accounts (paging)."
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "headers": {
+       "X-Cache": {
+        "schema": {
+         "type": "string",
+         "enum": [
+          "HIT",
+          "MISS",
+          "STALE"
+         ]
+        }
+       },
+       "X-Credits-Used": {
+        "schema": {
+         "type": "integer"
+        }
+       },
+       "X-Credits-Remaining": {
+        "schema": {
+         "type": "integer"
+        }
+       }
+      },
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "ok",
+          "data",
+          "meta"
+         ],
+         "properties": {
+          "ok": {
+           "const": true
+          },
+          "data": {
+           "$ref": "#/components/schemas/TopPage"
+          },
+          "meta": {
+           "$ref": "#/components/schemas/Meta"
+          }
+         }
+        }
+       }
+      }
+     },
+     "400": {
+      "$ref": "#/components/responses/Error"
+     },
+     "401": {
+      "$ref": "#/components/responses/Error"
+     },
+     "404": {
+      "$ref": "#/components/responses/Error"
+     },
+     "422": {
+      "$ref": "#/components/responses/Error"
+     },
+     "429": {
+      "$ref": "#/components/responses/Error"
+     },
+     "451": {
+      "$ref": "#/components/responses/Error"
+     },
+     "502": {
+      "$ref": "#/components/responses/Error"
+     },
+     "503": {
+      "$ref": "#/components/responses/Error"
+     }
+    },
+    "x-mcp-name": "instagram_top_accounts"
+   }
+  },
   "/v1/usage": {
    "get": {
     "operationId": "usage",
@@ -3653,6 +3823,131 @@
       "items": {
        "$ref": "#/components/schemas/Post"
       }
+     }
+    }
+   },
+   "TopAccount": {
+    "type": "object",
+    "properties": {
+     "rank": {
+      "type": "integer"
+     },
+     "username": {
+      "type": "string"
+     },
+     "name": {
+      "type": "string"
+     },
+     "followers": {
+      "type": "integer"
+     },
+     "change_1d": {
+      "type": [
+       "integer",
+       "null"
+      ]
+     },
+     "change_7d": {
+      "type": [
+       "integer",
+       "null"
+      ]
+     },
+     "change_30d": {
+      "type": [
+       "integer",
+       "null"
+      ]
+     },
+     "country": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "category": {
+      "type": "string"
+     },
+     "is_verified": {
+      "type": "boolean"
+     },
+     "engagement_rate": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "next_milestone": {
+      "type": [
+       "integer",
+       "null"
+      ]
+     },
+     "milestone_projected": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "description": "YYYY-MM-DD, straight-line projection from the last 30 days"
+     }
+    }
+   },
+   "TopPage": {
+    "type": "object",
+    "properties": {
+     "sort": {
+      "type": "string"
+     },
+     "window_days": {
+      "type": "integer"
+     },
+     "country": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "category": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "total": {
+      "type": "integer"
+     },
+     "offset": {
+      "type": "integer"
+     },
+     "limit": {
+      "type": "integer"
+     },
+     "accounts": {
+      "type": "array",
+      "items": {
+       "$ref": "#/components/schemas/TopAccount"
+      }
+     },
+     "updated_at": {
+      "type": "string"
+     },
+     "day": {
+      "type": "string"
+     },
+     "tracking_since": {
+      "type": "string"
+     },
+     "windows_available": {
+      "type": "array",
+      "items": {
+       "type": "integer"
+      }
+     },
+     "source": {
+      "type": "string"
+     },
+     "license": {
+      "type": "string"
      }
     }
    },
