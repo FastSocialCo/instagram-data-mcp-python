@@ -3,8 +3,9 @@
 <!-- mcp-name: io.github.FastSocialCo/instagram-data-mcp -->
 
 A small local MCP server for public Instagram data, published on PyPI as `instagram-data-mcp`.
-It gives Claude, Cursor and any other MCP client 27 read-only tools: profiles, posts, reels,
-stories, highlights, comments, likers, followers, hashtags, places, audio and search.
+It gives Claude, Cursor and any other MCP client 28 read-only tools: profiles, posts, reels,
+stories, highlights, comments, likers, followers, hashtags, places, audio, search
+and a daily ranking of the 2,000 most-followed accounts.
 
 Most people don't need this package. The same tools are available from the remote server at
 `https://data.fastsocial.co/mcp`, with sign-in in the browser and nothing to install. Setup for
