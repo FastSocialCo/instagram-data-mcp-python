@@ -4,13 +4,13 @@ build-backend = "hatchling.build"
 
 [project]
 name = "instagram-data-mcp"
-version = "0.1.5"
-description = "MCP server for public Instagram data: profiles, posts, reels, stories, highlights, comments, hashtags and more."
+version = "0.1.6"
+description = "Local MCP server for the FastSocial Instagram data API: public profiles, posts, reels, stories and comments."
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
 dependencies = ["mcp>=2.2", "httpx>=0.27", "anyio>=4"]
-keywords = ["mcp", "instagram", "model-context-protocol", "instagram-api", "scraper", "claude", "ai-agents"]
+keywords = ["mcp", "instagram", "model-context-protocol", "instagram-api", "instagram-data-api", "claude", "ai-agents"]
 classifiers = [
   "Programming Language :: Python :: 3",
   "Topic :: Internet :: WWW/HTTP",

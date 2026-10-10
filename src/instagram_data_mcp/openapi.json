@@ -3,7 +3,7 @@
  "info": {
   "title": "FastSocial Instagram Data API",
   "version": "1.1.0",
-  "description": "A read-only REST API for public Instagram data: profiles, posts, reels, stories, highlights, comments, likes, followers, hashtags, locations, audio and search, plus engagement insights and a handle check. One key, one header, clean JSON. Public data only; nothing logs in or posts."
+  "description": "A read-only REST API for public Instagram data: profiles, posts, reels, stories, highlights, comments, likes, followers, hashtags, locations, audio and search, plus engagement insights and a handle check. Send your key in one header and get JSON back. Public data only; it never logs in to Instagram or posts anything."
  },
  "servers": [
   {
@@ -57,7 +57,7 @@
     "tags": [
      "Profiles"
     ],
-    "description": "Follower, following and post counts, bio, links, category, verification and the HD profile picture of any public account.\n\nCost: **1 credit**.",
+    "description": "Follower, following and post counts, bio, links, category, verification and the profile picture of any public account.\n\nCost: **1 credit**.",
     "parameters": [
      {
       "name": "username",
@@ -267,7 +267,7 @@
     "tags": [
      "Profiles"
     ],
-    "description": "The current handle for a numeric user id, which still works after the account renames itself.\n\nCost: **3 credits**.",
+    "description": "The current handle for a numeric user id, which still works after the account renames itself.\n\nCost: **2 credits**.",
     "parameters": [
      {
       "name": "user_id",
@@ -687,7 +687,7 @@
     "tags": [
      "Posts & reels"
     ],
-    "description": "Public posts by other accounts that tag this account. Useful for UGC, brand mentions and influencer tracking.\n\nCost: **1 credit**.",
+    "description": "Public posts by other accounts that tag this account.\n\nCost: **1 credit**.",
     "parameters": [
      {
       "name": "username",
@@ -1186,7 +1186,7 @@
            "const": true
           },
           "data": {
-           "$ref": "#/components/schemas/CommentPage"
+           "$ref": "#/components/schemas/ReplyPage"
           },
           "meta": {
            "$ref": "#/components/schemas/Meta"
@@ -1664,7 +1664,7 @@
     "tags": [
      "Network"
     ],
-    "description": "Accounts Instagram considers related to this one. Handy for competitor research and influencer discovery.\n\nCost: **1 credit**.",
+    "description": "Accounts Instagram considers related to this one.\n\nCost: **1 credit**.",
     "parameters": [
      {
       "name": "username",
@@ -1725,7 +1725,7 @@
            "const": true
           },
           "data": {
-           "$ref": "#/components/schemas/UserPage"
+           "$ref": "#/components/schemas/SimilarPage"
           },
           "meta": {
            "$ref": "#/components/schemas/Meta"
@@ -1979,7 +1979,7 @@
     "tags": [
      "Stories & highlights"
     ],
-    "description": "Every photo and video inside one highlight, with signed CDN URLs.\n\nCost: **3 credits**.",
+    "description": "Every photo and video inside one highlight, with signed CDN URLs. Costs 3 credits the first time for an account; more highlights of the same account are free for 15 minutes.\n\nCost: **3 credits**.",
     "parameters": [
      {
       "name": "id",
@@ -2074,7 +2074,7 @@
     "tags": [
      "Discovery"
     ],
-    "description": "One search box, three result types: matching accounts, hashtags (with post counts) and places (with location ids).\n\nCost: **1 credit**.",
+    "description": "Matching accounts, hashtags (with post counts) and places (with location ids).\n\nCost: **1 credit**.",
     "parameters": [
      {
       "name": "q",
@@ -2433,7 +2433,7 @@
            "const": true
           },
           "data": {
-           "$ref": "#/components/schemas/PostPage"
+           "$ref": "#/components/schemas/PlacePostPage"
           },
           "meta": {
            "$ref": "#/components/schemas/Meta"
@@ -2732,7 +2732,7 @@
            "const": true
           },
           "data": {
-           "$ref": "#/components/schemas/PostPage"
+           "$ref": "#/components/schemas/ReelsSearchPage"
           },
           "meta": {
            "$ref": "#/components/schemas/Meta"
@@ -3224,7 +3224,48 @@
       ]
      },
      "is_private": {
-      "type": "boolean"
+      "type": "boolean",
+      "description": "Only present (true) when the account is private; posts is then empty."
+     }
+    }
+   },
+   "PlacePostPage": {
+    "type": "object",
+    "properties": {
+     "place_id": {
+      "type": "string"
+     },
+     "posts": {
+      "type": "array",
+      "items": {
+       "$ref": "#/components/schemas/Post"
+      }
+     },
+     "next_cursor": {
+      "type": [
+       "string",
+       "null"
+      ]
+     }
+    }
+   },
+   "ReelsSearchPage": {
+    "type": "object",
+    "properties": {
+     "query": {
+      "type": "string"
+     },
+     "posts": {
+      "type": "array",
+      "items": {
+       "$ref": "#/components/schemas/Post"
+      }
+     },
+     "next_cursor": {
+      "type": [
+       "string",
+       "null"
+      ]
      }
     }
    },
@@ -3315,6 +3356,23 @@
       "items": {
        "$ref": "#/components/schemas/Comment"
       }
+     }
+    }
+   },
+   "ReplyPage": {
+    "type": "object",
+    "properties": {
+     "shortcode": {
+      "type": "string"
+     },
+     "comment_id": {
+      "type": "string"
+     },
+     "comments": {
+      "type": "array",
+      "items": {
+       "$ref": "#/components/schemas/Comment"
+      }
      },
      "next_cursor": {
       "type": [
@@ -3353,6 +3411,23 @@
      }
     }
    },
+   "SimilarPage": {
+    "type": "object",
+    "properties": {
+     "username": {
+      "type": "string"
+     },
+     "user_id": {
+      "type": "string"
+     },
+     "users": {
+      "type": "array",
+      "items": {
+       "$ref": "#/components/schemas/UserSummary"
+      }
+     }
+    }
+   },
    "Check": {
     "type": "object",
     "properties": {
@@ -3382,6 +3457,9 @@
        "integer",
        "null"
       ]
+     },
+     "is_verified": {
+      "type": "boolean"
      }
     }
    },

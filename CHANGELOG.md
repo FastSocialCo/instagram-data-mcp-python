@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.6
+- Bundled openapi.json synced with the live API: new credit costs (username 2, comments, place and highlights 3).
+
 ## 0.1.5
 - New tool `instagram_top_accounts`: the daily ranking of the 2,000 most-followed Instagram accounts (free, 0 credits).
 - Bundled openapi.json synced with the live API (28 endpoints). A spec `x-mcp-name` now sets the tool name when present.
