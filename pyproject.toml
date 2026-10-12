@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "instagram-data-mcp"
-version = "0.1.6"
+version = "0.1.7"
 description = "Local MCP server for the FastSocial Instagram data API: public profiles, posts, reels, stories and comments."
 readme = "README.md"
 license = "MIT"
@@ -18,8 +18,8 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://fastsocial.co/instagram-api"
-Documentation = "https://fastsocial.co/instagram-api/docs"
+Homepage = "https://fastsocial.co/instagram-api?ref=pypi"
+Documentation = "https://fastsocial.co/instagram-api/docs?ref=pypi"
 Repository = "https://github.com/FastSocialCo/instagram-data-mcp-python"
 
 [project.scripts]

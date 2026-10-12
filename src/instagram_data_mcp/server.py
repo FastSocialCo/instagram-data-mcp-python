@@ -5,7 +5,7 @@ API it wraps: one GET endpoint = one tool, its query parameters = the tool's inp
 Read-only by construction; the API itself cannot log in, post, follow or like.
 
 Auth: set IG_DATA_API_KEY in the MCP client's env. Free keys at
-https://fastsocial.co/instagram-api
+https://fastsocial.co/instagram-api?ref=mcp-local
 """
 import json
 import os
@@ -18,7 +18,7 @@ from mcp.server.lowlevel import Server
 from mcp.server.stdio import stdio_server
 
 BASE_URL = os.getenv("IG_DATA_API_BASE", "https://data.fastsocial.co").rstrip("/")
-SIGNUP_URL = "https://fastsocial.co/instagram-api"
+SIGNUP_URL = "https://fastsocial.co/instagram-api?ref=mcp-local"
 TIMEOUT = float(os.getenv("IG_DATA_API_TIMEOUT", "60"))
 
 

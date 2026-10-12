@@ -14,7 +14,7 @@ Use this package if your client only runs local (stdio) servers.
 
 ## Run it
 
-Get a key at https://fastsocial.co/instagram-api (there is a free plan), then:
+Get a key at https://fastsocial.co/instagram-api?ref=pypi (there is a free plan), then:
 
 ```json
 {
@@ -61,7 +61,7 @@ Privacy policy: https://fastsocial.co/privacy · Terms: https://fastsocial.co/te
 
 The tool list and what each one costs in credits are in the
 [plugin README](https://github.com/FastSocialCo/instagram-data-mcp#the-27-tools) and the
-[API docs](https://fastsocial.co/instagram-api/docs).
+[API docs](https://fastsocial.co/instagram-api/docs?ref=pypi).
 
 ## Security
 

@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.7
+- Links to fastsocial.co carry `?ref=` (pypi in the README and package metadata, mcp-local in the server's sign-up hint). No tool changes.
+
 ## 0.1.6
 - Bundled openapi.json synced with the live API: new credit costs (username 2, comments, place and highlights 3).
 
